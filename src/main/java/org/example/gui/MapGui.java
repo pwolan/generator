@@ -2,15 +2,12 @@ package org.example.gui;
 
 
 
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import org.example.Square;
-import org.example.Squares;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import org.example.classes.Square;
+import org.example.classes.Squares;
 import org.example.helpers.Vector2d;
 
 import java.util.Map;
@@ -23,27 +20,34 @@ public class MapGui {
     public MapGui(Squares squares, GridPane rootPane) {
         this.squares = squares;
         this.rootPane = rootPane;
+        Platform.runLater(()->{
+            rootPane.setHgap(5);
+            rootPane.setVgap(5);
+            rootPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        });
         render();
     }
     public void render(){
-        rootPane.getColumnConstraints().clear();
-        rootPane.getRowConstraints().clear();
-        rootPane.getChildren().clear();
+        Platform.runLater(()->{
+            rootPane.getColumnConstraints().clear();
+            rootPane.getRowConstraints().clear();
+            rootPane.getChildren().clear();
 
-////        Node gr = rootPane.getChildren().get(0);
-//
-//        rootPane.getChildren().clear();
-//        rootPane.add(gr,0,0);
-//        rootPane.setGridLinesVisible(true);
-        rootPane.getColumnConstraints().add(new ColumnConstraints(CELL_SIZE));
-        for (Map.Entry<Vector2d, Square> entry : this.squares.getSquaresMap().entrySet()) {
-            Vector2d pos = entry.getKey();
-            Square sq = entry.getValue();
-            GuiElementBox elementBox = new GuiElementBox(sq,pos);
-            elementBox.renderElement(this.rootPane);
-            rootPane.getColumnConstraints().add(new ColumnConstraints(CELL_SIZE));
-            rootPane.getRowConstraints().add(new RowConstraints(CELL_SIZE));
-        }
+
+            this.squares.forEachSquare((Square sq, Vector2d pos)->{
+                GuiElementBox elementBox = new GuiElementBox(sq,pos);
+                elementBox.renderElement(this.rootPane);
+                if(pos.x() == 0){
+                    rootPane.getColumnConstraints().add(new ColumnConstraints(CELL_SIZE));
+                }
+                if(pos.y()==0){
+                    rootPane.getRowConstraints().add(new RowConstraints(CELL_SIZE));
+                }
+
+            });
+
+        });
+
 
     }
 }

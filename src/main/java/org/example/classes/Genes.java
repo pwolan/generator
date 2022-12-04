@@ -1,4 +1,4 @@
-package org.example.helpers;
+package org.example.classes;
 
 public class Genes {
     private int[] genesArray;
@@ -13,5 +13,14 @@ public class Genes {
     }
     public int getActiveGene(){
         return genesArray[activeGene];
+    }
+
+    public static int[] getRandomGenotype(int len){
+        int[] genotype = new int[len];
+        for (int i = 0; i < len; i++) {
+            int n = (int)(Math.random()*8);
+            genotype[i] = n;
+        }
+        return genotype;
     }
 }

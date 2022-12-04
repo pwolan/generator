@@ -16,8 +16,13 @@ public record Vector2d(int x, int y) {
         return "(" + x + "," + y + ")";
     }
 
-}
 
+    public Vector2d add(Vector2d other) {
+        int xx = other.x + x;
+        int yy = other.y + y;
+        return new Vector2d(xx, yy);
+    }
+}
 
 //    boolean precedes(Vector2d other) {
 //        return other.x <= x && other.y <= y;
@@ -41,11 +46,7 @@ public record Vector2d(int x, int y) {
 //        return out;
 //    }
 //
-//    Vector2d add(Vector2d other) {
-//        int xx = other.x + x;
-//        int yy = other.y + y;
-//        return new Vector2d(xx, yy);
-//    }
+
 //
 //    Vector2d subtract(Vector2d other) {
 //        int xx = x - other.x;

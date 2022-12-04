@@ -3,6 +3,7 @@ package org.example.enums;
 
 import org.example.helpers.Vector2d;
 
+
 public enum MapDirection {
     NORTH,
     NORTHWEST,
@@ -12,26 +13,14 @@ public enum MapDirection {
     SOUTHEAST,
     EAST,
     NORTHEAST;
+    private static final MapDirection[] values = values();
 
-//    public MapDirection next(){
-//        return switch (this){
-//            case NORTH -> EAST;
-//            case WEST -> NORTH;
-//            case SOUTH -> WEST;
-//            case EAST -> SOUTH;
-//        };
-//    }
-//
-//    public MapDirection previous(){
-//        return switch (this){
-//            case EAST -> NORTH;
-//            case NORTH -> WEST;
-//            case WEST -> SOUTH;
-//            case SOUTH -> EAST;
-//        };
-//    }
+    public MapDirection rotate(int gene){
+        int newDirectionInt = (this.ordinal() + gene) % 8;
+        return MapDirection.values[newDirectionInt];
+    }
 
-    Vector2d toUnitVector(){
+    public Vector2d toUnitVector(){
         return switch (this){
             case NORTH -> new Vector2d(0,1);
             case NORTHWEST -> new Vector2d(-1, 1);
@@ -43,7 +32,11 @@ public enum MapDirection {
             case NORTHEAST -> new Vector2d(1, 1);
         };
     }
-
+    public static MapDirection getRandom(){
+        MapDirection[] directions = MapDirection.values;
+        int n = (int)(Math.random()*8);
+        return directions[n];
+    }
     @Override
     public String toString() {
         return switch (this){

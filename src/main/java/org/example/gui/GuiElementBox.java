@@ -5,19 +5,20 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import org.example.Square;
+import org.example.classes.Square;
 import org.example.helpers.Vector2d;
 import org.example.interfaces.IMapElement;
 
 public class GuiElementBox {
-    private VBox container;
+    private StackPane container;
     private Square square;
     private  Vector2d position;
 
 
     public GuiElementBox(Square square, Vector2d position) {
-
-        VBox container = new VBox();
+        Label l = new Label(position.toString());
+        l.viewOrderProperty().setValue(10);
+        StackPane container = new StackPane();
 
         BackgroundFill bgFill = new BackgroundFill(Color.rgb(167, 212, 100), CornerRadii.EMPTY, Insets.EMPTY);
         if(square.isPrefered()){
@@ -27,17 +28,13 @@ public class GuiElementBox {
         this.container = container;
         this.square = square;
         this.position = position;
-
+        container.getChildren().add(l);
         this.renderElements();
     }
 
     private void renderElements(){
-        Color grassColor = Color.rgb(56, 195, 28);
-
         this.container.getChildren().clear();
-
         for(IMapElement el : square.getElements()){
-            System.out.println("XDDDDD");
             Node n = el.getGuiElement();
             this.container.getChildren().add(n);
         }

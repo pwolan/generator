@@ -7,4 +7,5 @@ module generator{
     exports org.example.gui;
     exports org.example.enums;
     exports org.example.helpers;
+    exports org.example.classes;
 }
