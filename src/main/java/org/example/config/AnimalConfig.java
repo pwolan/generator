@@ -1,14 +1,25 @@
 package org.example.config;
 
 public class AnimalConfig {
-    private int startAnimals = 5; // startowa liczba zwierzaków
-    private int startAnimalEnergy = 100; //startowa energia zwierzaków
-    private int fullAnimalEnergy = 50; // energia konieczna, by uznać zwierzaka za najedzonego
-    private int reproduceEnergy = 30; // energia rodziców zużywana by stworzyć potomka
-    private int minMutation = 1; // minimalna liczba mutacji u potomków
-    private int maxMutation = 5; // maksymalna liczba mutacji u potomków
+    /** startowa liczba zwierzaków */
+    private int startAnimals = 6;
+    /** startowa energia zwierzaków */
+    private int startEnergy = 80;
+    /** energia konieczna, by uznać zwierzaka za najedzonego */
+    private int readyToReproduceEnergy = 30;
+    /** energia zużywana podczas jednego dnia*/
+    private int forDayEnergy = 10;
+    /** energia rodziców zużywana by stworzyć potomka*/
+    private int reproduceEnergy = 20;
+    /** maksymalna ilość energii Animala*/
+    private int maxAnimalEnergy = 100;
+    /** minimalna liczba mutacji u potomków */
+    private int minMutation = 1;
+    /** maksymalna liczba mutacji u potomków */
+    private int maxMutation = 5;
     //wariant mutacji
     private int genesLength = 8;
+
 
     public int getStartAnimals() {
         return startAnimals;
@@ -18,20 +29,20 @@ public class AnimalConfig {
         this.startAnimals = startAnimals;
     }
 
-    public int getStartAnimalEnergy() {
-        return startAnimalEnergy;
+    public int getStartEnergy() {
+        return startEnergy;
     }
 
-    public void setStartAnimalEnergy(int startAnimalEnergy) {
-        this.startAnimalEnergy = startAnimalEnergy;
+    public void setStartEnergy(int startEnergy) {
+        this.startEnergy = startEnergy;
     }
 
-    public int getFullAnimalEnergy() {
-        return fullAnimalEnergy;
+    public int getReadyToReproduceEnergy() {
+        return readyToReproduceEnergy;
     }
 
-    public void setFullAnimalEnergy(int fullAnimalEnergy) {
-        this.fullAnimalEnergy = fullAnimalEnergy;
+    public void setReadyToReproduceEnergy(int readyToReproduceEnergy) {
+        this.readyToReproduceEnergy = readyToReproduceEnergy;
     }
 
     public int getReproduceEnergy() {
@@ -64,6 +75,22 @@ public class AnimalConfig {
 
     public void setGenesLength(int genesLength) {
         this.genesLength = genesLength;
+    }
+
+    public int getForDayEnergy() {
+        return forDayEnergy;
+    }
+
+    public void setForDayEnergy(int forDayEnergy) {
+        this.forDayEnergy = forDayEnergy;
+    }
+
+    public int getMaxAnimalEnergy() {
+        return maxAnimalEnergy;
+    }
+
+    public void setMaxAnimalEnergy(int maxAnimalEnergy) {
+        this.maxAnimalEnergy = maxAnimalEnergy;
     }
 //wariant zachowania
 }

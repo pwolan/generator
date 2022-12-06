@@ -8,4 +8,5 @@ module generator{
     exports org.example.enums;
     exports org.example.helpers;
     exports org.example.classes;
+    exports org.example.config;
 }

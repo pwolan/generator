@@ -50,5 +50,7 @@ public enum MapDirection {
             case NORTHEAST -> "Pn-W";
         };
     }
+
+
 }
 

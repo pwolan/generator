@@ -22,6 +22,10 @@ public record Vector2d(int x, int y) {
         int yy = other.y + y;
         return new Vector2d(xx, yy);
     }
+
+    public boolean inBoundaries(Vector2d boundary){
+        return x > 0 && y > 0 && x < boundary.x() && y < boundary.y();
+    }
 }
 
 //    boolean precedes(Vector2d other) {

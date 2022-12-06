@@ -7,5 +7,5 @@ public interface IMapElement {
     Vector2d getPosition();
 
     Node getGuiElement();
-//    void removeElement(); może??
+
 }
