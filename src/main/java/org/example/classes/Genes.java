@@ -60,5 +60,13 @@ public class Genes {
         return genotype;
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+        for (int g : genesArray) {
+            out.append(g);
+            out.append(" ");
+        }
+        return out.toString();
+    }
 }

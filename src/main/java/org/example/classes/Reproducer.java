@@ -19,7 +19,7 @@ public class Reproducer {
         Genes newGenes = Genes.combine(an1.getGenes(), an2.getGenes(), an1Percent);
 
         int maxMut = animalConfig.getMaxMutation();
-        int minMut = animalConfig.getMaxMutation();
+        int minMut = animalConfig.getMinMutation();
 
         newGenes.mutate(minMut, maxMut);
 

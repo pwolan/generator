@@ -1,8 +1,10 @@
 package org.example;
 
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import org.example.classes.*;
 import org.example.gui.MapGui;
+import org.example.gui.StatsGui;
 import org.example.helpers.Vector2d;
 import org.example.interfaces.IWorldMap;
 
@@ -11,15 +13,19 @@ import java.util.List;
 public class SimulationEngine implements Runnable {
     private IWorldMap map;
     private Squares squares;
+    private SimulationStats simulationStats;
     private MapGui mapGui;
+    private StatsGui statsGui;
     private SimulationConfig config;
 
-    public SimulationEngine( SimulationConfig config, GridPane rootPane) {
+    public SimulationEngine(SimulationConfig config, GridPane rootPane, Pane rootStats) {
         Vector2d mapSize = config.getMapSize();
         IWorldMap map = new WorldMap(mapSize);
         this.map = map;
         this.squares = map.getSquares();
         this.mapGui = new MapGui(squares, rootPane);
+        this.simulationStats = new SimulationStats(squares, config);
+        this.statsGui = new StatsGui(rootStats,simulationStats);
         this.config = config;
 
         this.init();
@@ -27,8 +33,8 @@ public class SimulationEngine implements Runnable {
 
     private void init(){
         //add Grasses
-        for (int i = 0; i < config.getGrassConfig().getStartGrasses(); i++) {
-            Vector2d pos = map.getRandomPosition();
+        int startGrasses = config.getGrassConfig().getStartGrasses();
+        for(Vector2d pos : this.map.getRandomGrassPositions(startGrasses)){
             Grass g = new Grass(pos, config.getGrassConfig());
             g.addObserver(squares);
             map.place(g);
@@ -46,36 +52,26 @@ public class SimulationEngine implements Runnable {
 
     @Override
     public void run() {
+        while (true){
+            this.mapGui.render();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            day();
+        }
 
-        this.mapGui.render();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        day();
-        this.mapGui.render();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        day();
-        this.mapGui.render();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        day();
-        this.mapGui.render();
     }
 
     private void day(){
         // usunięcie martwych zwierząt z mapy
+        for(Animal animal: this.squares.getDeadAnimals()){
+            animal.remove();
+        }
 
         // skret i przemieszczenie kazdego zwierzecia
-        for (Animal animal: this.squares.getAnimalsIterable() ){
+        for (Animal animal: this.squares.getAnimalsList() ){
             animal.nextMove(this.map);
         }
 
@@ -108,6 +104,10 @@ public class SimulationEngine implements Runnable {
             g.addObserver(squares);
             map.place(g);
         }
+        // liczenie statsystyk
+
+        this.simulationStats.refresh();
+        statsGui.render();
 
     }
 

@@ -102,4 +102,8 @@ public class Animal extends AbstractMapElement implements Comparable<Animal> {
     public void reverseOrientation(){
         orientation = orientation.rotate(4);
     }
+
+    public void remove() {
+        notifyObservers(position, null, this);
+    }
 }

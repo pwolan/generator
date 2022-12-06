@@ -21,7 +21,6 @@ public class Grass extends AbstractMapElement{
     @Override
     public Node getGuiElement() {
         Color grassColor = Color.rgb(56, 195, 28);
-        grassColor = Color.rgb(0, 0, 0);
         Rectangle rectangle = new Rectangle(0, 0, 40, 40);
         rectangle.setFill(grassColor);
         rectangle.viewOrderProperty().setValue(1);

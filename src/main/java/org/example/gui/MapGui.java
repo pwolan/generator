@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
 import org.example.classes.Square;
 import org.example.classes.Squares;
 import org.example.helpers.Vector2d;
@@ -34,7 +33,7 @@ public class MapGui {
             rootPane.getRowConstraints().clear();
             rootPane.getChildren().clear();
 
-        for (Square sq : this.squares.getSquaresIterable()) {
+        for (Square sq : this.squares.getSquaresList()) {
 
             Vector2d pos = sq.getPosition();
             GuiElementBox elementBox = new GuiElementBox(sq,pos);
