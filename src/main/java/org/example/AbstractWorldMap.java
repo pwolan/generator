@@ -9,34 +9,17 @@ import org.example.interfaces.IWorldMap;
 
 import java.util.*;
 
-public  class WorldMap implements IWorldMap {
-    private Vector2d size;
-    private Squares squares;
+public abstract class AbstractWorldMap implements IWorldMap {
+    protected Vector2d size;
+    protected Squares squares;
 
-    public WorldMap(Vector2d size) {
+    public AbstractWorldMap(Vector2d size) {
         this.size = size;
         this.squares = new Squares(size);
     }
 
     @Override
-    public Vector2d move(Animal animal, Vector2d moveVec) {
-        Vector2d oldPos = animal.getPosition();
-        Vector2d newPos = oldPos.add(moveVec);
-        if (newPos.inBoundaries(size)) {
-            return newPos;
-        }
-        if (newPos.x() < 0) {
-            newPos = newPos.add(new Vector2d(size.x(), 0));
-        }
-        if (newPos.x() >= size.x()) {
-            newPos = newPos.add(new Vector2d(-size.x(), 0));
-        }
-        if (newPos.y() < 0 || newPos.y() >= size.y()) {
-            newPos = new Vector2d(newPos.x(), oldPos.y());
-            animal.reverseOrientation();
-        }
-        return newPos;
-    }
+    public abstract Vector2d move(Animal animal, Vector2d moveVec);
 
     public void place(IMapElement element){
        squares.addElementToSquare(element);

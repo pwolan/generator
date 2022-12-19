@@ -20,7 +20,7 @@ public class SimulationEngine implements Runnable {
 
     public SimulationEngine(SimulationConfig config, GridPane rootPane, Pane rootStats) {
         Vector2d mapSize = config.getMapSize();
-        IWorldMap map = new WorldMap(mapSize);
+        IWorldMap map = new Hell(mapSize);
         this.map = map;
         this.squares = map.getSquares();
         this.mapGui = new MapGui(squares, rootPane);

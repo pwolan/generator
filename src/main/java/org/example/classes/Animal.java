@@ -38,7 +38,7 @@ public class Animal extends AbstractMapElement implements Comparable<Animal> {
         Vector2d oldPosition = position;
 
         position = map.move(this, moveVec);
-
+        setEnergy(energy - animalConfig.getForDayEnergy());
 
         energy = Math.max(energy - animalConfig.getForDayEnergy(), 0);
         notifyObservers(oldPosition, position, this);
@@ -55,11 +55,16 @@ public class Animal extends AbstractMapElement implements Comparable<Animal> {
         circle.viewOrderProperty().setValue(0);
         return circle;
     }
+    private void setEnergy(int e){
+        energy = Math.max(e, 0);
+    }
 
     public int getEnergy() {
         return energy;
     }
-
+    public void decreasePortalEnergy(){
+        setEnergy(energy-animalConfig.getReproduceEnergy());
+    }
     public int getAge() {
         return age;
     }

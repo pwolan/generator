@@ -14,7 +14,10 @@ public class Squares implements IMapPositionObserver{
     private final Vector2d size;
     private int animalDeathCount = 0;
 
+    private int[][] deathMatrix;
+
     public Squares(Vector2d size) {
+        this.deathMatrix =  new int[size.x()][size.y()];
         this.size = size;
         squares = new Square[size.x()][size.y()];
         int line = size.y()/2;
@@ -22,10 +25,14 @@ public class Squares implements IMapPositionObserver{
             for (int j = 0; j < size.y(); j++) {
                 Square sq = new Square(new Vector2d(i,j), j==line );
                 squares[i][j] = sq;
+                //przy okazji
+                deathMatrix[i][j] = 0;
             }
         }
     }
+    public void refreshPrefered(){
 
+    }
     public Vector2d getSize() {
         return size;
     }
@@ -87,6 +94,8 @@ public class Squares implements IMapPositionObserver{
             newSquare.addElement(element);
         } else {
             animalDeathCount++;
+            //informacje o śmierciach
+            deathMatrix[oldPosition.x()][oldPosition.y()]++;
         }
     }
 
