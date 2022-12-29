@@ -20,7 +20,13 @@ public class SimulationEngine implements Runnable {
 
     public SimulationEngine(SimulationConfig config, GridPane rootPane, Pane rootStats) {
         Vector2d mapSize = config.getMapSize();
-        IWorldMap map = new Hell(mapSize);
+        IWorldMap map;
+        if(config.getMapName().equals("Hell")){
+            map = new Hell(mapSize,config.getGrassConfig());
+        }
+        else{
+            map = new Globe(mapSize,config.getGrassConfig());
+        }
         this.map = map;
         this.squares = map.getSquares();
         this.mapGui = new MapGui(squares, rootPane);
@@ -55,7 +61,7 @@ public class SimulationEngine implements Runnable {
         while (true){
             this.mapGui.render();
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

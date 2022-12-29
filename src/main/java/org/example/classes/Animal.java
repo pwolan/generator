@@ -42,7 +42,7 @@ public class Animal extends AbstractMapElement implements Comparable<Animal> {
 
         energy = Math.max(energy - animalConfig.getForDayEnergy(), 0);
         notifyObservers(oldPosition, position, this);
-        genes.nextGene();
+        genes.nextGene(animalConfig);
         age++;
     }
     @Override

@@ -21,7 +21,7 @@ public class Reproducer {
         int maxMut = animalConfig.getMaxMutation();
         int minMut = animalConfig.getMinMutation();
 
-        newGenes.mutate(minMut, maxMut);
+        newGenes.mutate(minMut, maxMut,animalConfig);
 
         return new Animal(an1.getPosition(), animalConfig, childEnergy, newGenes);
     }

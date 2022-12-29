@@ -30,7 +30,7 @@ public class Square {
         return elements;
     }
 
-
+    public void updatePrefered(boolean prefered) {this.prefered = prefered;}
     public boolean isPrefered() {
         return prefered;
     }

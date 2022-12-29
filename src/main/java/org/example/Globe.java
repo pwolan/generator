@@ -1,11 +1,12 @@
 package org.example;
 
 import org.example.classes.Animal;
+import org.example.config.GrassConfig;
 import org.example.helpers.Vector2d;
 
 public class Globe extends AbstractWorldMap {
-    public Globe(Vector2d size) {
-        super(size);
+    public Globe(Vector2d size, GrassConfig grassConfig) {
+        super(size,grassConfig);
     }
 
     @Override

@@ -1,13 +1,14 @@
 package org.example;
 
 import org.example.classes.Animal;
+import org.example.config.GrassConfig;
 import org.example.helpers.Vector2d;
 
 import java.util.Random;
 
 public class Hell extends AbstractWorldMap{
-    public Hell(Vector2d size) {
-        super(size);
+    public Hell(Vector2d size, GrassConfig grassConfig) {
+        super(size,grassConfig);
     }
 
     @Override

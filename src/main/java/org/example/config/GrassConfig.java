@@ -2,6 +2,7 @@ package org.example.config;
 
 public class GrassConfig {
     //wariant wzrostu roślin
+    private String grassName = "Equator";
     private int startGrasses = 5; // startowa liczba roślin
     private int energyPerGrass = 50; // energia zapewniana przez zjedzenie jednej rośliny
 
@@ -30,4 +31,6 @@ public class GrassConfig {
     }
 
     private int newGrassesPerDay = 3; // liczba roślin wyrastająca każdego dnia
+    public void setGrassName(String grassName) {this.grassName = grassName;}
+    public String getGrassName() { return grassName; }
 }

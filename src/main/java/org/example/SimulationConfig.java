@@ -3,10 +3,12 @@ package org.example;
 import org.example.config.AnimalConfig;
 import org.example.config.GrassConfig;
 import org.example.helpers.Vector2d;
+import org.example.interfaces.IWorldMap;
 
 public class SimulationConfig {
     private Vector2d mapSize = new Vector2d(10, 10); // szerokość i wysokość mapy
     //wariant mapy
+    private String mapName = "Globe";
 
 
     private AnimalConfig animalConfig = new AnimalConfig();
@@ -35,4 +37,9 @@ public class SimulationConfig {
     public void setGrassConfig(GrassConfig grassConfig) {
         this.grassConfig = grassConfig;
     }
+    public void setMapName(String mapName) {this.mapName = mapName; }
+    public String getMapName() {return mapName; }
+
+
+
 }

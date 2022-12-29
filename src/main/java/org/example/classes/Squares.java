@@ -1,5 +1,7 @@
 package org.example.classes;
 
+import org.example.SimulationConfig;
+import org.example.config.GrassConfig;
 import org.example.helpers.Vector2d;
 import org.example.interfaces.IMapElement;
 import org.example.interfaces.IMapPositionObserver;
@@ -9,21 +11,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.min;
+
 public class Squares implements IMapPositionObserver{
     private final Square[][] squares;
     private final Vector2d size;
+    private String grassName;
     private int animalDeathCount = 0;
 
     private int[][] deathMatrix;
 
-    public Squares(Vector2d size) {
+    public Squares(Vector2d size, GrassConfig grassConfig) {
+        System.out.println(grassConfig.getGrassName());
+        this.grassName = grassConfig.getGrassName();
         this.deathMatrix =  new int[size.x()][size.y()];
         this.size = size;
         squares = new Square[size.x()][size.y()];
         int line = size.y()/2;
         for(int i = 0; i < size.x(); i++){
             for (int j = 0; j < size.y(); j++) {
-                Square sq = new Square(new Vector2d(i,j), j==line );
+                Square sq;
+                if(this.grassName.equals("Toxic")){
+                    sq = new Square(new Vector2d(i,j), true );
+                }
+                else{
+                    sq = new Square(new Vector2d(i,j), j==line );
+                }
                 squares[i][j] = sq;
                 //przy okazji
                 deathMatrix[i][j] = 0;
@@ -96,9 +109,25 @@ public class Squares implements IMapPositionObserver{
             animalDeathCount++;
             //informacje o śmierciach
             deathMatrix[oldPosition.x()][oldPosition.y()]++;
+            if(this.grassName.equals("Toxic")){
+                updatePrefered();
+            }
         }
     }
+    public void updatePrefered(){
+        int preferablenumber = deathMatrix[0][0];
+        for(int i = 0; i < size.x(); i++){
+            for (int j = 0; j < size.y(); j++) {
+                preferablenumber = min(preferablenumber,deathMatrix[i][j]);
+            }
+        }
 
+        for(int i = 0; i < size.x(); i++){
+            for (int j = 0; j < size.y(); j++) {
+                squares[i][j].updatePrefered(deathMatrix[i][j] == preferablenumber);
+            }
+        }
+    }
     public Iterable<Square> getSquaresToEatIterable() {
         List<Square> filteredSquares = new ArrayList<>();
         for (Square sq : this.getSquaresList()) {

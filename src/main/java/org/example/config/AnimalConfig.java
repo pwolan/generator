@@ -8,7 +8,7 @@ public class AnimalConfig {
     /** energia konieczna, by uznać zwierzaka za najedzonego */
     private int readyToReproduceEnergy = 30;
     /** energia zużywana podczas jednego dnia*/
-    private int forDayEnergy = 10;
+    private int forDayEnergy = 1;
     /** energia rodziców zużywana by stworzyć potomka*/
     private int reproduceEnergy = 20;
     /** maksymalna ilość energii Animala*/
@@ -20,6 +20,9 @@ public class AnimalConfig {
     //wariant mutacji
     private int genesLength = 8;
 
+    private String mutationName = "Random";
+
+    private String behaviorName = "Predestination";
 
     public int getStartAnimals() {
         return startAnimals;
@@ -92,5 +95,10 @@ public class AnimalConfig {
     public void setMaxAnimalEnergy(int maxAnimalEnergy) {
         this.maxAnimalEnergy = maxAnimalEnergy;
     }
-//wariant zachowania
+    //wariant zachowania
+    public void setMutationName(String mutationName) {this.mutationName = mutationName;}
+    public String getMutationName() {return mutationName;}
+    public void setBehaviorName(String behaviorName) {this.behaviorName = behaviorName;}
+    public String getBehaviorName() {return behaviorName;}
+
 }
