@@ -8,6 +8,7 @@ import org.example.gui.StatsGui;
 import org.example.helpers.Vector2d;
 import org.example.interfaces.IWorldMap;
 
+import java.io.IOException;
 import java.util.List;
 
 public class SimulationEngine implements Runnable {
@@ -18,7 +19,7 @@ public class SimulationEngine implements Runnable {
     private StatsGui statsGui;
     private SimulationConfig config;
 
-    public SimulationEngine(SimulationConfig config, GridPane rootPane, Pane rootStats) {
+    public SimulationEngine(SimulationConfig config, GridPane rootPane, Pane rootStats) throws IOException {
         Vector2d mapSize = config.getMapSize();
         IWorldMap map;
         if(config.getMapName().equals("Hell")){
@@ -61,16 +62,20 @@ public class SimulationEngine implements Runnable {
         while (true){
             this.mapGui.render();
             try {
-                Thread.sleep(3000);
+                Thread.sleep(config.getRefreshTime());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            day();
+            try {
+                day();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
 
-    private void day(){
+    private void day() throws IOException {
         // usunięcie martwych zwierząt z mapy
         for(Animal animal: this.squares.getDeadAnimals()){
             animal.remove();
@@ -100,6 +105,7 @@ public class SimulationEngine implements Runnable {
 
             Animal child = reproducer.reproduce(an1, an2);
             child.addObserver(squares);
+            map.place(child);
         }
 
 

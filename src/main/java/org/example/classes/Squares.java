@@ -22,7 +22,6 @@ public class Squares implements IMapPositionObserver{
     private int[][] deathMatrix;
 
     public Squares(Vector2d size, GrassConfig grassConfig) {
-        System.out.println(grassConfig.getGrassName());
         this.grassName = grassConfig.getGrassName();
         this.deathMatrix =  new int[size.x()][size.y()];
         this.size = size;
@@ -35,16 +34,13 @@ public class Squares implements IMapPositionObserver{
                     sq = new Square(new Vector2d(i,j), true );
                 }
                 else{
-                    sq = new Square(new Vector2d(i,j), j==line );
+                    sq = new Square(new Vector2d(i,j), j==line || j==(line-1) );
                 }
                 squares[i][j] = sq;
                 //przy okazji
                 deathMatrix[i][j] = 0;
             }
         }
-    }
-    public void refreshPrefered(){
-
     }
     public Vector2d getSize() {
         return size;

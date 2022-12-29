@@ -9,8 +9,8 @@ public class SimulationConfig {
     private Vector2d mapSize = new Vector2d(10, 10); // szerokość i wysokość mapy
     //wariant mapy
     private String mapName = "Globe";
-
-
+    private boolean saveToFile = false;
+    private int refreshTime = 2000;
     private AnimalConfig animalConfig = new AnimalConfig();
     private GrassConfig grassConfig = new GrassConfig();
 
@@ -34,12 +34,13 @@ public class SimulationConfig {
         return grassConfig;
     }
 
-    public void setGrassConfig(GrassConfig grassConfig) {
-        this.grassConfig = grassConfig;
+    public void setGrassConfig(GrassConfig grassConfig) {this.grassConfig = grassConfig;
     }
     public void setMapName(String mapName) {this.mapName = mapName; }
     public String getMapName() {return mapName; }
-
-
+    public void setRefreshTime(int refreshTime) {this.refreshTime = refreshTime;}
+    public int getRefreshTime() {return refreshTime;}
+    public void setSaveToFile(boolean saveToFile) {this.saveToFile = saveToFile;}
+    public boolean getSaveToFile() {return saveToFile;}
 
 }
