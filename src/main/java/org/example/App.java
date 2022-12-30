@@ -1,5 +1,6 @@
 package org.example;
 
+import javafx.stage.FileChooser;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,14 +14,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.example.helpers.Vector2d;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 
 public class App extends Application {
     final ToggleGroup groupMap = new ToggleGroup();
     final ToggleGroup groupGrass = new ToggleGroup();
     final ToggleGroup groupMutation = new ToggleGroup();
     final ToggleGroup groupBehavior = new ToggleGroup();
+    final FileChooser fileChooser = new FileChooser();
 
     TextField textFieldHeight = new TextField("10");
     TextField textFieldWidth = new TextField("10");
@@ -43,15 +52,22 @@ public class App extends Application {
         GridPane rootPane = new GridPane();
         ScrollPane scrollPane = new ScrollPane();
         HBox hbox = new HBox(10);
+
         VBox vbox = new VBox(10);
-        vbox.getChildren().add(hbox);
 
         Button btn = new Button();
         btn.setText("Start");
 
+        Button btnSave = new Button();
+        btnSave.setText("SaveOptions");
+
+        Button btnUpload = new Button();
+        btnUpload.setText("LoadOptions");
+
         ConfigBar(vbox);
 
-        vbox.getChildren().add(btn);
+        vbox.getChildren().add(hbox);
+        hbox.getChildren().addAll(btn,btnSave,btnUpload);
 
         hbox.setAlignment(Pos.CENTER);
         vbox.setAlignment(Pos.CENTER);
@@ -103,6 +119,104 @@ public class App extends Application {
 
             startThread.start();
         });
+        btnSave.setOnAction((e)->{
+            try {
+                SaveConfig();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        btnUpload.setOnAction((e)->{
+            UploadConfig(primaryStage);
+        });
+    }
+    public void SaveConfig() throws IOException {
+        PrintWriter out = new PrintWriter(new FileWriter("SaveConfig.json", false));
+        JSONObject obj = new JSONObject();
+        obj.put("groupMap",groupMap.getSelectedToggle().getUserData().toString());
+        obj.put("groupGrass",groupGrass.getSelectedToggle().getUserData().toString());
+        obj.put("groupMutation",groupMutation.getSelectedToggle().getUserData().toString());
+        obj.put("groupBehavior",groupBehavior.getSelectedToggle().getUserData().toString());
+        obj.put("mapSize", List.of(Integer.parseInt(textFieldWidth.textProperty().getValue()),Integer.parseInt(textFieldHeight.textProperty().getValue())));
+        obj.put("GrassEnergy",Integer.parseInt(textFieldGrassEnergy.textProperty().getValue()));
+        obj.put("ReadyReproductionEnergy",Integer.parseInt(textFieldReadyReproductionEnergy.textProperty().getValue()));
+        obj.put("ReproductionEnergy",Integer.parseInt(textFieldReproductionEnergy.textProperty().getValue()));
+        obj.put("AnimalStartEnergy",Integer.parseInt(textFieldAnimalStartEnergy.textProperty().getValue()));
+        obj.put("MaxEnergy",Integer.parseInt(textFieldMaxEnergy.textProperty().getValue()));
+        obj.put("DailyEnergy",Integer.parseInt(textFieldDailyEnergy.textProperty().getValue()));
+        obj.put("GenesLength",Integer.parseInt(textFieldGenesLength.textProperty().getValue()));
+        obj.put("MinMutation",Integer.parseInt(textFieldMinMutation.textProperty().getValue()));
+        obj.put("MaxMutation",Integer.parseInt(textFieldMaxMutation.textProperty().getValue()));
+        obj.put("AnimalsAtStart",Integer.parseInt(textFieldAnimalsAtStart.textProperty().getValue()));
+        obj.put("GrassStart",Integer.parseInt(textFieldGrassStart.textProperty().getValue()));
+        obj.put("GrassSpawned",Integer.parseInt(textFieldGrassSpawned.textProperty().getValue()));
+        obj.put("RefreshTime",Integer.parseInt(textFieldRefreshTime.textProperty().getValue()));
+        obj.put("SaveToFile",checkBoxSaveToFile.isSelected());
+        out.write(obj.toString());
+
+        out.close();
+    }
+    public void UploadConfig(Stage primaryStage){
+        File file = fileChooser.showOpenDialog(primaryStage);
+
+        if (file != null) {
+            openFile(file);
+        }
+    }
+    public void openFile(File file) {
+
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
+            JSONObject json = new JSONObject(content);
+            List<Toggle> listMap = groupMap.getToggles();
+            List<Toggle> listGrass = groupGrass.getToggles();
+            List<Toggle> listMutation = groupMutation.getToggles();
+            List<Toggle> listBehavior = groupBehavior.getToggles();
+            for (Toggle toggle : listMap) {
+                if (toggle.getUserData().equals(json.getString("groupMap"))) {
+                    groupMap.selectToggle(toggle);
+                }
+            }
+            for (Toggle grass : listGrass) {
+                if (grass.getUserData().equals(json.getString("groupGrass"))) {
+                    groupGrass.selectToggle(grass);
+                }
+            }
+            for (Toggle toggle : listMutation) {
+                if (toggle.getUserData().equals(json.getString("groupMutation"))) {
+                    groupMutation.selectToggle(toggle);
+                }
+            }
+            for (Toggle toggle : listBehavior) {
+                if (toggle.getUserData().equals(json.getString("groupBehavior"))) {
+                    groupBehavior.selectToggle(toggle);
+                }
+            }
+            JSONArray listMapSize = json.getJSONArray("mapSize");
+            textFieldWidth.setText(listMapSize.get(0).toString());
+            textFieldHeight.setText(listMapSize.get(1).toString());
+            textFieldGrassEnergy.setText(String.valueOf(json.getInt("GrassEnergy")));
+            textFieldReadyReproductionEnergy.setText(String.valueOf(json.getInt("ReadyReproductionEnergy")));
+            textFieldReproductionEnergy.setText(String.valueOf(json.getInt("ReproductionEnergy")));
+            textFieldAnimalStartEnergy.setText(String.valueOf(json.getInt("AnimalStartEnergy")));
+            textFieldMaxEnergy.setText(String.valueOf(json.getInt("MaxEnergy")));
+            textFieldDailyEnergy.setText(String.valueOf(json.getInt("DailyEnergy")));
+            textFieldGenesLength.setText(String.valueOf(json.getInt("GenesLength")));
+            textFieldMinMutation.setText(String.valueOf(json.getInt("MinMutation")));
+            textFieldMaxMutation.setText(String.valueOf(json.getInt("MaxMutation")));
+            textFieldAnimalsAtStart.setText(String.valueOf(json.getInt("AnimalsAtStart")));
+            textFieldGrassStart.setText(String.valueOf(json.getInt("GrassStart")));
+            textFieldGrassSpawned.setText(String.valueOf(json.getInt("GrassSpawned")));
+            textFieldRefreshTime.setText(String.valueOf(json.getInt("RefreshTime")));
+            checkBoxSaveToFile.setSelected(json.getBoolean("SaveToFile"));
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
 
     }
     public void ConfigBar(VBox vbox){
