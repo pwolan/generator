@@ -1,6 +1,5 @@
 package org.example;
 
-import javafx.stage.FileChooser;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,13 +11,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.example.helpers.Vector2d;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -131,7 +133,15 @@ public class App extends Application {
         });
     }
     public void SaveConfig() throws IOException {
-        PrintWriter out = new PrintWriter(new FileWriter("SaveConfig.json", false));
+        String name = "SaveConfig.json";
+        File f = new File(name);
+        int counter = 0;
+        while (f.exists()){
+            name = "SaveConfig"+ counter + ".json";
+            f = new File(name);
+            counter++;
+        }
+        PrintWriter out = new PrintWriter(new FileWriter(name, false));
         JSONObject obj = new JSONObject();
         obj.put("groupMap",groupMap.getSelectedToggle().getUserData().toString());
         obj.put("groupGrass",groupGrass.getSelectedToggle().getUserData().toString());
