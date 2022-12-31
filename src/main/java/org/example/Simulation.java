@@ -24,9 +24,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 
 public class Simulation implements Runnable{
@@ -116,7 +113,7 @@ public class Simulation implements Runnable{
             scrollPane.setContent(vbox);
             scrollPane.setFitToHeight(true);
             scrollPane.setFitToWidth(true);
-            Scene scene = new Scene(scrollPane, 800, 800);
+            Scene scene = new Scene(scrollPane, 800, 900);
 
             primaryStage.setScene(scene);
             primaryStage.show();

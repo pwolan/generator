@@ -27,6 +27,7 @@ public class App extends Application {
             thread.start();
             primaryStage.setOnCloseRequest(ev->{
                 Platform.exit();
+                System.exit(0);
             });
         });
 
