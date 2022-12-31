@@ -22,9 +22,13 @@ public class App extends Application {
         primaryStage.setScene(new Scene(vBox, 400,400));
         primaryStage.show();
         btn.setOnAction((e)->{
-            Runnable app2 = new Simulation();
+            Stage stage = new Stage();
+            Runnable app2 = new Simulation(stage);
             Thread thread = new Thread(app2);
             thread.start();
+            stage.setOnCloseRequest(ev->{
+                thread.stop();
+            });
             primaryStage.setOnCloseRequest(ev->{
                 Platform.exit();
                 System.exit(0);

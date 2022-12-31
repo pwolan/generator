@@ -63,7 +63,10 @@ public class Simulation implements Runnable{
     String textRefreshTime = "1000";
     TextField textFieldRefreshTime = new TextField(textRefreshTime);
     CheckBox checkBoxSaveToFile = new CheckBox("Save to file");
-
+    Stage primaryStage;
+    public Simulation(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
     public void run(){
         Platform.runLater(()->{
             textFieldHeight.setUserData(false);
@@ -82,7 +85,6 @@ public class Simulation implements Runnable{
             textFieldGrassSpawned.setUserData(false);
             textFieldRefreshTime.setUserData(false);
 
-            Stage primaryStage = new Stage();
             GridPane rootPane = new GridPane();
             primaryStage.setTitle("Simulation config");
 
@@ -158,6 +160,9 @@ public class Simulation implements Runnable{
                 hbox.getChildren().add(rootPane);
 
                 startThread.start();
+                primaryStage.setOnCloseRequest(ev->{
+                    startThread.stop();
+                });
             });
             btnSave.setOnAction((e)->{
                     try {

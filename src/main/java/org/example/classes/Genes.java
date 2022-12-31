@@ -48,7 +48,6 @@ public class Genes {
             int newIndex = rand.nextInt(genesArray.length);
             genesToMutate.add(newIndex);
         }
-        System.out.println(animalConfig.getMutationName());
         if(animalConfig.getMutationName().equals("Random")) {
             for (int geneIndex : genesToMutate) {
                 genesArray[geneIndex] = rand.nextInt(8);
