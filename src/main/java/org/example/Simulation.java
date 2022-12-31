@@ -24,6 +24,9 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 
 public class Simulation implements Runnable{
@@ -32,27 +35,55 @@ public class Simulation implements Runnable{
     final ToggleGroup groupMutation = new ToggleGroup();
     final ToggleGroup groupBehavior = new ToggleGroup();
     final FileChooser fileChooser = new FileChooser();
-
-    TextField textFieldHeight = new TextField("10");
-    TextField textFieldWidth = new TextField("10");
-    TextField textFieldGrassEnergy = new TextField("50");
-    TextField textFieldReadyReproductionEnergy = new TextField("30");
-    TextField textFieldReproductionEnergy = new TextField("20");
-    TextField textFieldAnimalStartEnergy = new TextField("80");
-    TextField textFieldMaxEnergy = new TextField("100");
-    TextField textFieldDailyEnergy = new TextField("10");
-    TextField textFieldGenesLength = new TextField("8");
-    TextField textFieldMinMutation = new TextField("1");
-    TextField textFieldMaxMutation = new TextField("5");
-    TextField textFieldAnimalsAtStart = new TextField("6");
-    TextField textFieldGrassStart = new TextField("5");
-    TextField textFieldGrassSpawned = new TextField("3");
-    TextField textFieldRefreshTime = new TextField("1000");
+    String textHeight = "10";
+    TextField textFieldHeight = new TextField(textHeight);
+    String textWidth = "10";
+    TextField textFieldWidth = new TextField(textWidth);
+    String textGrassEnergy = "50";
+    TextField textFieldGrassEnergy = new TextField(textGrassEnergy);
+    String textReadyReproductionEnergy = "30";
+    TextField textFieldReadyReproductionEnergy = new TextField(textReadyReproductionEnergy);
+    String textReproductionEnergy = "20";
+    TextField textFieldReproductionEnergy = new TextField(textReproductionEnergy);
+    String textAnimalStartEnergy = "80";
+    TextField textFieldAnimalStartEnergy = new TextField(textAnimalStartEnergy);
+    String textMaxEnergy = "100";
+    TextField textFieldMaxEnergy = new TextField(textMaxEnergy);
+    String textDailyEnergy = "10";
+    TextField textFieldDailyEnergy = new TextField(textDailyEnergy);
+    String textGenesLength = "8";
+    TextField textFieldGenesLength = new TextField(textGenesLength);
+    String textMinMutation = "1";
+    TextField textFieldMinMutation = new TextField(textMinMutation);
+    String textMaxMutation = "5";
+    TextField textFieldMaxMutation = new TextField(textMaxMutation);
+    String textAnimalsAtStart = "6";
+    TextField textFieldAnimalsAtStart = new TextField(textAnimalsAtStart);
+    String textGrassStart  = "5";
+    TextField textFieldGrassStart = new TextField(textGrassStart);
+    String textGrassSpawned = "3";
+    TextField textFieldGrassSpawned = new TextField(textGrassSpawned);
+    String textRefreshTime = "1000";
+    TextField textFieldRefreshTime = new TextField(textRefreshTime);
     CheckBox checkBoxSaveToFile = new CheckBox("Save to file");
 
     public void run(){
         Platform.runLater(()->{
-
+            textFieldHeight.setUserData(false);
+            textFieldWidth.setUserData(false);
+            textFieldGrassEnergy.setUserData(false);
+            textFieldReadyReproductionEnergy.setUserData(false);
+            textFieldReproductionEnergy.setUserData(false);
+            textFieldAnimalStartEnergy.setUserData(false);
+            textFieldMaxEnergy.setUserData(false);
+            textFieldDailyEnergy.setUserData(false);
+            textFieldGenesLength.setUserData(false);
+            textFieldMinMutation.setUserData(false);
+            textFieldMaxMutation.setUserData(false);
+            textFieldAnimalsAtStart.setUserData(false);
+            textFieldGrassStart.setUserData(false);
+            textFieldGrassSpawned.setUserData(false);
+            textFieldRefreshTime.setUserData(false);
 
             Stage primaryStage = new Stage();
             GridPane rootPane = new GridPane();
@@ -396,29 +427,81 @@ public class Simulation implements Runnable{
         hboxRefreshTime.setAlignment(Pos.CENTER);
     }
     public void EventListeners(){
-        textFieldHeight.textProperty().addListener(Listener(textFieldHeight));
-        textFieldWidth.textProperty().addListener(Listener(textFieldWidth));
-        textFieldGrassEnergy.textProperty().addListener(Listener(textFieldGrassEnergy));
-        textFieldReadyReproductionEnergy.textProperty().addListener(Listener(textFieldReadyReproductionEnergy));
-        textFieldReproductionEnergy.textProperty().addListener(Listener(textFieldReproductionEnergy));
-        textFieldAnimalStartEnergy.textProperty().addListener(Listener(textFieldAnimalStartEnergy));
-        textFieldMaxEnergy.textProperty().addListener(Listener(textFieldMaxEnergy));
-        textFieldDailyEnergy.textProperty().addListener(Listener(textFieldDailyEnergy));
-        textFieldGenesLength.textProperty().addListener(Listener(textFieldGenesLength));
-        textFieldMinMutation.textProperty().addListener(Listener(textFieldMinMutation));
-        textFieldMaxMutation.textProperty().addListener(Listener(textFieldMaxMutation));
-        textFieldAnimalsAtStart.textProperty().addListener(Listener(textFieldAnimalsAtStart));
-        textFieldGrassStart.textProperty().addListener(Listener(textFieldGrassStart));
-        textFieldGrassSpawned.textProperty().addListener(Listener(textFieldGrassSpawned));
-        textFieldRefreshTime.textProperty().addListener(Listener(textFieldRefreshTime));
+        textFieldHeight.textProperty().addListener(Listener(textFieldHeight,textHeight));
+        textFieldWidth.textProperty().addListener(Listener(textFieldWidth,textWidth));
+        textFieldGrassEnergy.textProperty().addListener(Listener(textFieldGrassEnergy,textGrassEnergy));
+        textFieldReadyReproductionEnergy.textProperty().addListener(Listener(textFieldReadyReproductionEnergy,textReadyReproductionEnergy));
+        textFieldReproductionEnergy.textProperty().addListener(Listener(textFieldReproductionEnergy,textReproductionEnergy));
+        textFieldAnimalStartEnergy.textProperty().addListener(Listener2(textFieldAnimalStartEnergy,textAnimalStartEnergy));
+        textFieldMaxEnergy.textProperty().addListener(Listener(textFieldMaxEnergy,textMaxEnergy));
+        textFieldDailyEnergy.textProperty().addListener(Listener(textFieldDailyEnergy,textDailyEnergy));
+        textFieldGenesLength.textProperty().addListener(Listener(textFieldGenesLength,textGenesLength));
+        textFieldMinMutation.textProperty().addListener(Listener(textFieldMinMutation,textMinMutation));
+        textFieldMaxMutation.textProperty().addListener(Listener(textFieldMaxMutation,textMaxMutation));
+        textFieldAnimalsAtStart.textProperty().addListener(Listener(textFieldAnimalsAtStart,textAnimalsAtStart));
+        textFieldGrassStart.textProperty().addListener(Listener(textFieldGrassStart,textGrassStart));
+        textFieldGrassSpawned.textProperty().addListener(Listener(textFieldGrassSpawned,textGrassSpawned));
+        textFieldRefreshTime.textProperty().addListener(Listener(textFieldRefreshTime,textRefreshTime));
     }
-    public ChangeListener<String> Listener(TextField textField){
+    public ChangeListener<String> Listener(TextField textField,String text){
         return new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
                 if (!newValue.matches("\\d*")) {
                     textField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+                if (!newValue.equals("") && Integer.parseInt(newValue) == 0){
+                    textField.setText(oldValue);
+                }
+                if (newValue.equals("") && !(boolean) textField.getUserData()){
+                    textField.setUserData(true);
+                    new java.util.Timer().schedule(
+                            new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    textField.setUserData(false);
+                                    if(textField.getText().equals("")){
+                                        textField.setText(text);
+                                    }
+                                    // your code here
+                                }
+                            },
+                            1000
+                    );
+                }
+            }
+        };
+    }
+    public ChangeListener<String> Listener2(TextField textField, String text){
+        return new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    textField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+                if (!newValue.equals("") && Integer.parseInt(newValue) == 0){
+                    textField.setText(oldValue);
+                }
+                if (!newValue.equals("") && Integer.parseInt(newValue) > Integer.parseInt(textFieldMaxEnergy.getText())){
+                    textField.setText(oldValue);
+                }
+                if (newValue.equals("") && !(boolean) textField.getUserData()){
+                    textField.setUserData(true);
+                    new java.util.Timer().schedule(
+                            new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    textField.setUserData(false);
+                                    if(textField.getText().equals("")){
+                                        textField.setText(text);
+                                    }
+                                    // your code here
+                                }
+                            },
+                            1000
+                    );
                 }
             }
         };
