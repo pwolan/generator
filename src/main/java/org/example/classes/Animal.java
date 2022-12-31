@@ -49,11 +49,15 @@ public class Animal extends AbstractMapElement implements Comparable<Animal> {
     public Node getGuiElement() {
         Circle circle = new Circle();
         circle.setRadius(20);
-        // basic color changes for now
-        float mltp = (float) energy / animalConfig.getMaxAnimalEnergy();
-        circle.setFill(Color.color(1-mltp, 0.16470589f, 0.16470589f));
+
+        circle.setFill(getColor());
         circle.viewOrderProperty().setValue(0);
         return circle;
+    }
+    private Color getColor(){
+        float mltp = (float) energy / animalConfig.getMaxAnimalEnergy();
+        Color color = Color.hsb(0,mltp,1);
+        return color;
     }
     private void setEnergy(int e){
         energy = Math.max(e, 0);
