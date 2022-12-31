@@ -56,6 +56,7 @@ public class Animal extends AbstractMapElement implements Comparable<Animal> {
     }
     private Color getColor(){
         float mltp = (float) energy / animalConfig.getMaxAnimalEnergy();
+        mltp = Math.max(0, mltp);
         Color color = Color.hsb(0,mltp,1);
         return color;
     }
